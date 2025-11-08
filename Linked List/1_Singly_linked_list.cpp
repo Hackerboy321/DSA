@@ -25,16 +25,16 @@ public:
     // insertion in linked list at the end
     void insertAtEnd(int value)
     {
+        node *newNode = new node(value);
         if (head == NULL)
         {
-            h
-            tail = head;
+            head = tail = newNode ; 
             cout << value << " is inserted in linked list\n";
             NumberOfNode++;
         }
         else
         {
-            node *newNode = new node(value);
+        
             tail->next = newNode;
             tail = newNode;
             cout << value << " is inserted in linked list\n";
@@ -48,7 +48,7 @@ public:
         node *newNode = new node(value);
         if (head == NULL)
         {
-            tail = head;
+            head = tail = newNode ;
             cout << value << " is inserted in linked list\n";
             NumberOfNode++;
         }
@@ -66,51 +66,57 @@ public:
     void insertAtPosition(int value, int position)
     {
         //for checking is position is valid or not.
-        if(position < 1 || position > NumberOfNode + 1 )
+        if(position >= 1 && position <= NumberOfNode + 1 )
+        {
+             //if position of insertion is start.
+            if(position == 1 )
+            {
+                insertAtStart(value);
+                return ; 
+            }
+
+            //if the position of insertion is end.
+            else if(position == NumberOfNode +1 )
+            {
+                insertAtEnd(value);
+                return ; 
+            }
+
+            else
+            {
+                node* temp = head ; 
+
+                for( int i = 1 ; i < position -1 ; i++)
+                {
+                    temp = temp->next ;
+                }
+
+                node* newNode = new node(value) ; 
+                newNode->next = temp->next ; 
+                temp->next = newNode ; 
+                cout<<value<<" is inserted in "<<position<<" position \n";
+                NumberOfNode++;
+
+            } 
+        }
+
+        else
         {
             cout<<"invalid position\n";
-            return ; 
         }
-
-        //if position of insertion is start.
-        if(position == 1 )
-        {
-            insertAtStart(value);
-            return ; 
-        }
-
-        //if the position of insertion is end.
-        if(position == NumberOfNode +1 )
-        {
-            insertAtEnd(value);
-            return ; 
-        }
-
-        node* temp = head ; 
-
-        for( int i = 1 ; i < position -1 ; i++)
-        {
-            temp = temp->next ;
-        }
-
-        node* newNode = new node(value) ; 
-        newNode->next = temp->next ; 
-        temp->next = newNode ; 
-        cout<<value<<" is inserted in "<<position<<" position \n";
-        NumberOfNode++ ; 
     }
 
     // for deleting the last node.
     void deleteAtEnd()
     {
         // when the linked list is empty.
-        if (isEmpty())
+        if (head == NULL)
         {
             cout << "Linked List is Empty\n";
         }
 
         // if the linked list has only one node.
-        else if (head->next == NULL)
+        else if (head == tail)
         {
             node *temp = head;
             cout << head->data << " is deleted\n";
@@ -123,27 +129,25 @@ public:
         // when the linked list has the multiple node.
         else
         {
-            node *curr = head;
-            node *prev = NULL;
-
-            while (curr->next != NULL)
+            node* temp = head; 
+            while(temp != NULL )
             {
-                prev = curr;
-                curr = curr->next;
+                temp = temp->next ; // now the temp is at second last node.
             }
 
-            cout << curr->data << " is deleted\n";
-            prev->next = NULL;
-            delete curr;
-            tail = prev;
-            NumberOfNode--;
+            cout<<tail->data<<" is deleted\n";
+            delete tail ; 
+            tail = temp ; 
+            NumberOfNode--; 
+
+
         }
     }
 
     // for deleting the first node of the linked list.
     void deleteAtStart()
     {
-        if (isEmpty())
+        if (head == NULL )
         {
             cout << "Linked List is Empty\n";
         }
@@ -204,13 +208,26 @@ public:
             cout << "invalaid position \n";
     }
 
-    bool isEmpty()
+ int search(int key)
+{
+    node* temp = head;
+    int position = 1;
+
+    while (temp != NULL)
     {
-        if (head == NULL)
-            return true;
-        else
-            return false;
+        if (temp->data == key)
+        {
+            cout << key << " found at position " << position << endl;
+            return position;
+        }
+        temp = temp->next;
+        position++;
     }
+
+    cout << key << " not found in the list." << endl;
+    return -1;
+}
+
 
     void display()
     {
@@ -226,7 +243,7 @@ public:
 
     void showHead()
     {
-        if (isEmpty())
+        if (head == NULL)
         {
             cout << "The list is empty.\n";
             return;
@@ -260,4 +277,5 @@ int main()
     List.deleteAtStart();
     List.display();
     List.showHead();
+    List.search(7);
  }
