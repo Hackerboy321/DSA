@@ -1,68 +1,87 @@
 #include <iostream>
-using namespace std ;
+using namespace std;
 
-// Implimentation of stack using array.
-
-class stack 
+// Implementation of stack using array
+class Stack 
 {
-    public:
-    int *arr ; 
-    int size ; 
-    int top ; 
+public:
+    int *arr;
+    int size;
+    int top;
 
-    stack( int n )
+    Stack(int n)
     {
-        size = n ; 
-        top = - 1 ;
-        arr = new int[size] ; 
+        size = n;
+        top = -1;
+        arr = new int[size];
     }
 
-    //to push the value in the stack 
     void push(int value)
     {
-        top++ ; 
-        arr[top] = value ; 
-        cout<<value<<" is pushed\n";
+        if (top == size - 1)
+        {
+            cout << "Stack overflow\n";
+            return;
+        }
+        arr[++top] = value;
+        cout << value << " is pushed\n";
+    }
+
+    void pop()
+    {
+        if (isEmpty())
+        {
+            cout << "Stack underflow\n";
+            return;
+        }
+        cout << arr[top--] << " is deleted\n";
     }
 
     void display()
     {
-        for(int i  = 0 ; i < top ; i++ )
+        if (isEmpty())
         {
-            cout<<arr[i]<<endl ; 
+            cout << "Stack is empty\n";
+            return;
+        }
+        cout << "Stack elements (top to bottom):\n";
+        for (int i = top; i >= 0; i--)
+        {
+            cout << arr[i] << endl;
         }
     }
 
     void peek()
     {
-        if(top == - 1 )
+        if (isEmpty())
         {
-            cout<<"stack is empty \n" ; 
+            cout << "Stack is empty\n";
+            return;
         }
-
-        else 
-        {
-            cout<<"The peek is "<<top;
-        }
+        cout << "The peek is " << arr[top] << endl;
     }
 
     bool isEmpty()
     {
-        if(top == -1 ) return true ;
-
-        else return false ; 
-
+        return (top == -1);
     }
-}; 
 
+    ~Stack()
+    {
+        delete[] arr;
+    }
+};
 
 int main()
 {
-    stack s(10);
-    s.push(10) ; 
-    s.push(20) ; 
-    s.push(30) ; 
-    s.push(40) ; 
-    s.push(50) ;
-    s.display() ;  
+    Stack s(10);
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.push(40);
+    s.push(50);
+    s.display();
+    s.peek();
+    s.pop();
+    s.display();
 }
