@@ -8,7 +8,6 @@ class student
     static int total_student ; 
 
     public:
-
     student(string name , int roll_no)
     { 
         this->name = name ; 

@@ -34,7 +34,6 @@ public:
         }
         else
         {
-        
             tail->next = newNode;
             tail = newNode;
             cout << value << " is inserted in linked list\n";
@@ -96,7 +95,6 @@ public:
                 temp->next = newNode ; 
                 cout<<value<<" is inserted in "<<position<<" position \n";
                 NumberOfNode++;
-
             } 
         }
 
@@ -118,11 +116,9 @@ public:
         // if the linked list has only one node.
         else if (head == tail)
         {
-            node *temp = head;
-            cout << head->data << " is deleted\n";
-            head = NULL;
-            tail = NULL;
-            delete temp;
+            cout<<head->data<<" is deleted \n";
+            delete head ;
+            head = tail = NULL ; 
             NumberOfNode--;
         }
 
@@ -130,37 +126,46 @@ public:
         else
         {
             node* temp = head; 
-            while(temp != NULL )
+            while(temp->next  != tail )
             {
                 temp = temp->next ; // now the temp is at second last node.
             }
 
             cout<<tail->data<<" is deleted\n";
             delete tail ; 
-            tail = temp ; 
+            tail = temp ;
+            tail->next = NULL ; 
             NumberOfNode--; 
-
-
         }
     }
 
-    // for deleting the first node of the linked list.
+    // for deleting the node from the start of the linked list.
     void deleteAtStart()
     {
-        if (head == NULL )
+         // when the linked list is empty.
+        if ( head == NULL )
         {
             cout << "Linked List is Empty\n";
+            return ;
         }
 
+        // if the linked list has only one node.
+        else if(head == tail )
+        {
+            cout<<head->data<<" is deleted \n";
+            delete head ;
+            head = tail = NULL ; 
+            NumberOfNode--;
+        }
+
+        // if there is multiple nodes. 
         else
         {
-            node *temp = head;
-            head = head->next;
-            cout << temp->data << " is deleted \n";
-            delete temp;
-            if (head == NULL)
-                tail = NULL;
-            NumberOfNode--;
+            node* temp = head ;
+            head = head->next ; // move that head to the second which now new head.
+            cout<<temp->data<<" is deleted\n"; 
+            delete temp ; 
+            NumberOfNode-- ; 
         }
     }
 
@@ -173,41 +178,43 @@ public:
             // if we to delete the first node of the linked list.
             if (position == 1)
             {
-                node *temp = head;
-                head = head->next;
-                cout << temp->data << " is deleted \n";
-                delete temp;
-                NumberOfNode--;
+                deleteAtStart() ; 
+                return ;
             }
 
-            // if there is multiple node. and this will also work of if we wnat to delete the last node.
-            else
+            // if the position is the last node.
+            else if ( position == NumberOfNode )
             {
-                node *curr = head;
-                node *prev = NULL;
-                position--;
+                deleteAtEnd();
+                return ;
+            }
 
-                while (position--)
+            //  if the position is any particular node.
+            else 
+            {
+                node* curr = head ;
+                node* prev = NULL ;
+
+                for(int i = 1 ; i < position ; i++)
                 {
-                    prev = curr;
-                    curr = curr->next;
+                    prev = curr ; 
+                    curr = curr->next ; 
                 }
 
-                prev->next = curr->next;
-                cout << curr->data << " is deleted \n";
-
-                // for updating the tail.
-                if (curr == tail)
-                    tail = prev;
-
-                delete curr;
+                prev->next = curr->next ;
+                cout<<curr->data<<" is deleted\n" ;
+                delete curr ;  
                 NumberOfNode--;
             }
         }
-        else
-            cout << "invalaid position \n";
+       
+        else 
+        {
+            cout << "invalid position \n";
+        }
     }
 
+// for searching the value in the linked list.
  int search(int key)
 {
     node* temp = head;
@@ -229,16 +236,27 @@ public:
 }
 
 
+   // for traverses and printing the ndoe.
     void display()
-    {
-        node *ptr = head;
-        while (ptr != NULL)
+    { 
+        if(head == NULL)
         {
-            cout << ptr->data << " ";
-            ptr = ptr->next;
+            cout<<"The Linked list is empty \n";
         }
 
-        cout << endl;
+        else 
+        {
+            node* ptr = head ; 
+            do
+            {
+                cout<<ptr->data<<" "; 
+                ptr = ptr->next ; 
+            } 
+            while (ptr != NULL) ;
+            
+            cout<<endl ; 
+            
+        }
     }
 
     void showHead()
@@ -255,27 +273,18 @@ public:
 };
 
 int main()
-{
+ {
     LinkedList List;
-    List.insertAtStart(5);
-    List.insertAtStart(6);
-    List.insertAtStart(7);
-    List.insertAtStart(8);
-    List.insertAtStart(9);
-    List.display();
-    List.showHead();
-    List.insertAtPosition(10,1);
-    List.display() ;
-    List.showHead() ; 
-    List.insertAtPosition(4,6);
-    List.display();
-    List.insertAtPosition(15, 3);
-    List.display();
-    List.deleteAtPosition(50);
-    List.deleteAtEnd();
-    List.display();
+    List.insertAtEnd(10) ; 
+    List.insertAtEnd(20) ; 
+    List.insertAtEnd(30) ; 
+    List.insertAtEnd(40) ; 
+    List.insertAtStart(5) ; 
+    List.deleteAtEnd() ; 
     List.deleteAtStart();
-    List.display();
-    List.showHead();
-    List.search(7);
+    List.deleteAtPosition(2);
+    List.insertAtPosition(15,2);
+    List.display(); 
+    List.showHead() ; 
+    
  }

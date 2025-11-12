@@ -18,7 +18,6 @@ struct node
 class DoublyLinkedList
 {
     public: 
-
     node* head = NULL ;
     node* tail = NULL ; 
     int numberOfNode = 0 ; 
@@ -28,6 +27,7 @@ class DoublyLinkedList
     // to insert a node at the beginning of the linked list. 
     void insertAtStart( int value )
     {
+        // if there is no node.
         if(head == NULL)
         {
             head = new node(value) ; 
@@ -38,6 +38,7 @@ class DoublyLinkedList
 
         else
         {
+            // if there is multiple node. 
             node* newNode = new node(value) ; 
             head->prev = newNode ; 
             newNode->next = head; 
